@@ -1,23 +1,19 @@
-import logo from './logo.svg';
 import './App.css';
+import React from 'react';
 
 function App() {
+  React.useEffect(() => {
+    document.title = 'Welcome to the app';
+  }, []);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
+    <div className="app">
+      <div className="app__content">
+        <h1 className="title">Welcome to my project</h1>
         <p>
-          Edit <code>src/App.js</code> and save to reload.
+          An application about learning and deep dive into React.JS framework
         </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      </div>
     </div>
   );
 }
