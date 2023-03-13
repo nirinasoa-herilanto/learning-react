@@ -1,10 +1,10 @@
 import './Card.css';
 import React from 'react';
 
-function Card(props) {
+const Card = (props) => {
   return (
     <div className={`card ${props.className || ''}`}>{props.children}</div>
   );
-}
+};
 
 export default Card;
