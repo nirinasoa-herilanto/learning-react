@@ -26,13 +26,17 @@ const App = () => {
     },
   ];
 
+  const addExpenseHandler = (expense) => {
+    console.log('from APP', expense);
+  };
+
   React.useEffect(() => {
     document.title = 'Welcome to the app';
   }, []);
 
   return (
     <div className="app">
-      <NewExpense />
+      <NewExpense onAddExpense={addExpenseHandler} />
       <Expenses data={expenses} />
     </div>
   );
