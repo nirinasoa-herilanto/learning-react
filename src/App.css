@@ -5,9 +5,12 @@
   justify-content: center;
   align-items: center;
 
-  background: #fafafa;
+  background: #393e4b;
 }
 
-.title {
-  color: #0089ff;
+.app__content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 32px;
 }

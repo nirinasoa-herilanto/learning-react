@@ -1,0 +1,15 @@
+.modal-item__name {
+  color: #ae0000;
+}
+
+.modal-item__btn {
+  width: 150px;
+  height: 32px;
+  font-size: 18px;
+
+  border: none;
+  float: right;
+  background: #e0b108;
+  box-shadow: 2px 2px 8px rgb(0, 0, 0, 0.5);
+  cursor: pointer;
+}
