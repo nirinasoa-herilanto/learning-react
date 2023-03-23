@@ -1,21 +1,17 @@
 import React from 'react';
-import style from './UsersList.module.css';
 
 import Card from '../UI/Card';
+import classes from './UsersList.module.css';
 
 const UsersList = (props) => {
   return (
-    <Card className={style.users}>
+    <Card className={classes.users}>
       <ul>
-        {props.users?.length !== 0 ? (
-          props.users?.map((user) => (
-            <li key={user.id} onClick={() => props.onDeleteUser(user.id)}>
-              {user.username} ({user.age} years old)
-            </li>
-          ))
-        ) : (
-          <div>No users !!!</div>
-        )}
+        {props.users.map((user) => (
+          <li key={user.id}>
+            {user.name} ({user.age} years old)
+          </li>
+        ))}
       </ul>
     </Card>
   );
