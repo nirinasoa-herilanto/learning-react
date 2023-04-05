@@ -7,7 +7,9 @@ const App = () => {
   return (
     <React.Fragment>
       <Header />
-      <Meals />
+      <main>
+        <Meals />
+      </main>
     </React.Fragment>
   );
 };
