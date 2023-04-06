@@ -3,13 +3,13 @@ import styles from './Cart.module.css';
 
 import Modal from '../UI/Modal';
 
-const Cart = () => {
+const Cart = (props) => {
   const cartLists = [{ id: 'c1', name: 'Shushi', price: '12.99' }].map(
     (item) => <li key={item.id}>{item.name}</li>
   );
 
   return (
-    <Modal>
+    <Modal onClose={props.onHideCart}>
       <ul className={styles['cart-items']}>{cartLists}</ul>
 
       <div className={styles.total}>
@@ -18,7 +18,9 @@ const Cart = () => {
       </div>
 
       <div className={styles.actions}>
-        <button className={styles['button--alt']}>Close</button>
+        <button className={styles['button--alt']} onClick={props.onHideCart}>
+          Close
+        </button>
         <button className={styles.button}>Order</button>
       </div>
     </Modal>
