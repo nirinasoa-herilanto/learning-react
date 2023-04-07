@@ -15,7 +15,7 @@ const cartReducer = (state, action) => {
 
     const updatedItems = state.items.map((el) => {
       if (el.id === action.item.id) {
-        el.amount = action.item.amount;
+        return { ...el, amount: el.amount + action.item.amount };
       }
 
       return el;
@@ -31,6 +31,25 @@ const cartReducer = (state, action) => {
   }
 
   if (action.type === 'REMOVE_ITEM') {
+    let totalAmount = state.totalAmount;
+
+    const items = state.items
+      .map((item) => {
+        if (item.id === action.id) {
+          return { ...item, amount: item.amount - 1 };
+        }
+
+        return item;
+      })
+      .filter((el) => {
+        return el.amount > 0;
+      });
+
+    totalAmount = items.reduce((acc, item) => {
+      return acc + item.amount * item.price;
+    }, 0);
+
+    return { items, totalAmount };
   }
 
   return initialCartState;
