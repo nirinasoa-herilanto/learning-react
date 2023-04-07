@@ -14,7 +14,9 @@ const App = () => {
   return (
     <CartProvider>
       <Header onShowCart={showCartHandler} />
+
       {cartIsShow && <Cart onHideCart={hideCartHandler} />}
+
       <main>
         <Meals />
       </main>
