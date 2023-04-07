@@ -9,9 +9,23 @@ const initialCartState = {
 
 const cartReducer = (state, action) => {
   if (action.type === 'ADD_ITEM') {
-    const items = state.items.concat(action.item);
-    const totalAmount =
-      state.totalAmount + action.item.price * action.item.amount;
+    let totalAmount = state.totalAmount;
+
+    const existingItem = state.items.some((item) => action.item.id === item.id);
+
+    const updatedItems = state.items.map((el) => {
+      if (el.id === action.item.id) {
+        el.amount = action.item.amount;
+      }
+
+      return el;
+    });
+
+    const items = existingItem ? updatedItems : state.items.concat(action.item);
+
+    totalAmount = items.reduce((acc, item) => {
+      return acc + item.amount * item.price;
+    }, 0);
 
     return { items, totalAmount };
   }
