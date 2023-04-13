@@ -3,11 +3,7 @@ import classes from './UserFinder.module.css';
 
 import Users from './Users';
 
-const DUMMY_USERS = [
-  { id: 'u1', name: 'Max' },
-  { id: 'u2', name: 'Manuel' },
-  { id: 'u3', name: 'Julie' },
-];
+import UsersContext from '../store/user-context';
 
 class UserFinder extends React.Component {
   constructor() {
@@ -19,20 +15,22 @@ class UserFinder extends React.Component {
     };
   }
 
+  static contextType = UsersContext;
+
   searchChangeHandler(event) {
     this.setState({ searchTerm: event.target.value });
   }
 
   componentDidMount() {
     // send some http request ...
-    this.setState({ filteredUsers: DUMMY_USERS });
+    this.setState({ filteredUsers: this.context.users });
   }
 
   componentDidUpdate(prevProps, prevState) {
     // if statement is used, to avoid infinite loop
     if (prevState.searchTerm !== this.state.searchTerm) {
       this.setState({
-        filteredUsers: DUMMY_USERS.filter((user) =>
+        filteredUsers: this.context.users.filter((user) =>
           user.name.includes(this.state.searchTerm)
         ),
       });
