@@ -1,20 +1,33 @@
-import './App.css';
 import React from 'react';
 
+import MoviesList from './components/MoviesList';
+import './App.css';
+
 function App() {
-  React.useEffect(() => {
-    document.title = 'Welcome to the app';
-  }, []);
+  const dummyMovies = [
+    {
+      id: 1,
+      title: 'Some Dummy Movie',
+      openingText: 'This is the opening text of the movie',
+      releaseDate: '2021-05-18',
+    },
+    {
+      id: 2,
+      title: 'Some Dummy Movie 2',
+      openingText: 'This is the second opening text of the movie',
+      releaseDate: '2021-05-19',
+    },
+  ];
 
   return (
-    <div className="app">
-      <div className="app__content">
-        <h1 className="title">Welcome to my project</h1>
-        <p>
-          An application about learning and deep dive into React.JS framework
-        </p>
-      </div>
-    </div>
+    <React.Fragment>
+      <section>
+        <button>Fetch Movies</button>
+      </section>
+      <section>
+        <MoviesList movies={dummyMovies} />
+      </section>
+    </React.Fragment>
   );
 }
 
