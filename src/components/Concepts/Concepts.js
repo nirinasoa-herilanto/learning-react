@@ -9,6 +9,7 @@ const Concepts = (props) => {
       {props.data?.map((item) => (
         <ConceptItem
           key={item.title}
+          title={item.title}
           imageUrl={item.image}
           description={item.description}
         />
