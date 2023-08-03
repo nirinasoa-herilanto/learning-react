@@ -1,47 +1,22 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState, useCallback, useMemo } from 'react';
+
+import useQueryData from './hooks/use-query-data';
 
 import Tasks from './components/Tasks/Tasks';
 import NewTask from './components/NewTask/NewTask';
 
 const App = () => {
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState(null);
   const [tasks, setTasks] = useState([]);
 
-  const fetchTasks = async (taskText) => {
-    setIsLoading(true);
-    setError(null);
-    try {
-      const response = await fetch(
-        'https://react-http-6b4a6.firebaseio.com/tasks.json'
-      );
+  const { data, isLoading, error, refetchData } = useQueryData();
 
-      if (!response.ok) {
-        throw new Error('Request failed!');
-      }
-
-      const data = await response.json();
-
-      const loadedTasks = [];
-
-      for (const taskKey in data) {
-        loadedTasks.push({ id: taskKey, text: data[taskKey].text });
-      }
-
-      setTasks(loadedTasks);
-    } catch (err) {
-      setError(err.message || 'Something went wrong!');
-    }
-    setIsLoading(false);
-  };
-
-  const taskAddHandler = (task) => {
+  const taskAddHandler = useCallback((task) => {
     setTasks((prevTasks) => prevTasks.concat(task));
-  };
-
-  useEffect(() => {
-    fetchTasks();
   }, []);
+
+  useMemo(() => {
+    setTasks(data);
+  }, [data]);
 
   return (
     <React.Fragment>
@@ -50,7 +25,7 @@ const App = () => {
         items={tasks}
         loading={isLoading}
         error={error}
-        onFetch={fetchTasks}
+        onFetch={refetchData}
       />
     </React.Fragment>
   );
