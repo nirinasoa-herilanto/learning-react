@@ -13,7 +13,7 @@ const useCounter = ({ operation = 'increment' | 'decrement', value = 1 }) => {
     }, 1000);
 
     return () => clearInterval(interval);
-  }, [operation]);
+  }, [operation, value]);
 
   return counter;
 };
