@@ -37,12 +37,7 @@ const BasicForm = (props) => {
   const submitFormHandler = (e) => {
     e.preventDefault();
 
-    if (
-      !enteredFirstNameIsValid ||
-      !enteredLastNameIsValid ||
-      !enteredEmailIsValid
-    )
-      return;
+    if (!formIsValid) return;
 
     console.log(enteredFirstName, enteredLastName, enteredEmail);
 

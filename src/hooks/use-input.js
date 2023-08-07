@@ -1,4 +1,31 @@
-import { useState } from 'react';
+import { useReducer } from 'react';
+
+const initialValue = {
+  value: '',
+  isTouched: false,
+};
+
+const inputReducer = (state, action) => {
+  if (action.type === 'INPUT') {
+    return {
+      value: action.value,
+      isTouched: state.isTouched,
+    };
+  }
+
+  if (action.type === 'BLUR') {
+    return {
+      value: state.value,
+      isTouched: true,
+    };
+  }
+
+  if (action.type === 'RESET') {
+    return initialValue;
+  }
+
+  return initialValue;
+};
 
 /**
  * Custom hook, useInput, an abstraction of input handler
@@ -9,27 +36,25 @@ import { useState } from 'react';
  * @returns {Function} inputBlurHandler, a method that allow to blur the input field
  */
 const useInput = (validateValueFn) => {
-  const [enteredValue, setEnteredValue] = useState('');
-  const [isTouched, setIsTouched] = useState(false);
+  const [inputState, dispatchInput] = useReducer(inputReducer, initialValue);
 
-  const valueIsValid = validateValueFn(enteredValue); // boolean, by default, true
-  const hasError = !valueIsValid && isTouched; // if no value && the input is blur
+  const valueIsValid = validateValueFn(inputState.value); // boolean, by default, true
+  const hasError = !valueIsValid && inputState.isTouched; // if no value && the input is blur
 
   const valueChangeHandler = (e) => {
-    setEnteredValue(e.target.value);
+    dispatchInput({ type: 'INPUT', value: e.target.value });
   };
 
   const inputBlurHandler = () => {
-    setIsTouched(true);
+    dispatchInput({ type: 'BLUR' });
   };
 
   const resetValueHandler = () => {
-    setEnteredValue('');
-    setIsTouched(false);
+    dispatchInput({ type: 'RESET' });
   };
 
   return {
-    value: enteredValue,
+    value: inputState.value,
     isValid: valueIsValid,
     hasError,
     valueChangeHandler,
