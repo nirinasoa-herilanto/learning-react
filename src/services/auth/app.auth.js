@@ -1,5 +1,4 @@
 import {
-  onAuthStateChanged,
   signOut,
   signInWithPopup,
   isSignInWithEmailLink,
@@ -11,50 +10,35 @@ import {
 } from 'firebase/auth';
 
 /**
- * App authentication Core, an abstraction of Firebase auth.
+ * AppAuthCore class, is an abstraction of Firebase auth hooks.
+ * - signupWithEmail(redirectionUrl, email)
+ * - completeSignupRegistration(password)
+ * - loggedInWithEmailAndPassword(email, password)
+ * - loggedInWithGoogle
+ * - loggout
  */
 class AppAuthCore {
-  user = null;
-
   constructor(auth, googleProvider) {
     this._auth = auth;
     this._googleProvider = googleProvider;
   }
 
-  #setUser(userParams) {
-    if (!userParams) return;
-    this.user = userParams;
-  }
-
-  onAuthStateChanged() {
-    return onAuthStateChanged(this._auth, (user) => {
-      this.#setUser(user);
-    });
-  }
-
-  logAuth() {
-    console.log(this._auth);
-  }
-
   /**
    * Use to signup with email account
    */
-  async signupWithEmail(email) {
+  async signupWithEmail(redirectionUrl, email) {
     try {
       const actionCodeSettings = {
         // URL you want to redirect back to. The domain (www.example.com) for this
         // URL must be in the authorized domains list in the Firebase Console.
-        url: 'http://localhost:3000',
+        url: redirectionUrl,
         handleCodeInApp: true,
       };
 
       await sendSignInLinkToEmail(this._auth, email, actionCodeSettings);
 
       window.localStorage.setItem('emailForSignIn', email);
-
-      return this;
     } catch (error) {
-      // show error on UI
       throw new Error('Something went wrong, please try later!');
     }
   }
@@ -83,7 +67,7 @@ class AppAuthCore {
 
       window.localStorage.removeItem('emailForSignIn');
 
-      return this;
+      return user;
     } catch (error) {
       throw new Error('Something went wrong, please try later!');
     }
@@ -99,9 +83,7 @@ class AppAuthCore {
       password
     );
 
-    this.#setUser(user);
-
-    return this;
+    return user;
   }
 
   /**
@@ -109,8 +91,8 @@ class AppAuthCore {
    */
   async loggedInWithGoogle() {
     const { user } = await signInWithPopup(this._auth, this._googleProvider);
-    this.#setUser(user);
-    return this;
+
+    return user;
   }
 
   /**
@@ -118,7 +100,6 @@ class AppAuthCore {
    */
   async loggout() {
     await signOut(this._auth);
-    return this;
   }
 }
 

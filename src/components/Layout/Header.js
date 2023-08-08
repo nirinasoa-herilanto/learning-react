@@ -2,27 +2,14 @@ import React from 'react';
 import styles from './Header.module.css';
 
 import mealsImage from '../../assets/meals.jpg';
-import HeaderCartButton from './HeaderCartButton';
 
-import Button from '../UI/Button';
 import { useAuthStore } from '../../store/auth/auth-context';
-import AppAuthCore from '../../services/auth/app.auth';
-import { auth, provider } from '../../config/firebase.config';
+
+import HeaderCartButton from './HeaderCartButton';
+import Button from '../UI/Button';
 
 const Header = (props) => {
-  const { user } = useAuthStore();
-
-  const appAuthCore = new AppAuthCore(auth, provider);
-
-  console.log(appAuthCore.user);
-
-  const clickHandler = async () => {
-    await appAuthCore.loggedInWithGoogle();
-  };
-
-  const loggoutHandler = async () => {
-    await appAuthCore.loggout();
-  };
+  const { user, signingWithGoogleHandler, loggoutHandler } = useAuthStore();
 
   return (
     <React.Fragment>
@@ -31,9 +18,9 @@ const Header = (props) => {
 
         <div>
           <HeaderCartButton onClick={props.onShowCart} />
-          {!user && <Button onClick={clickHandler}>Sign in</Button>}
 
-          {user && <Button onClick={loggoutHandler}>log out</Button>}
+          {!user && <Button onClick={signingWithGoogleHandler}>Sign in</Button>}
+          {user && <Button onClick={loggoutHandler}>Log out</Button>}
         </div>
       </header>
 

@@ -1,20 +1,31 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
+import { onAuthStateChanged } from 'firebase/auth';
 
 import { auth, provider } from '../../config/firebase.config';
 
 import AppAuthCore from '../../services/auth/app.auth';
 
 import AuthContext from './auth-context';
-import { onAuthStateChanged } from 'firebase/auth';
-import { useState } from 'react';
 
 const appAuthCore = new AppAuthCore(auth, provider);
 
 const AuthProvider = (props) => {
   const [user, setUser] = useState(null);
+
+  const signingWithGoogleHandler = async () => {
+    const user = await appAuthCore.loggedInWithGoogle();
+    user && setUser(user);
+  };
+
+  const loggoutHandler = async () => {
+    await appAuthCore.loggout();
+  };
+
   const ctx = {
-    auth: appAuthCore,
     user,
+    auth: appAuthCore,
+    signingWithGoogleHandler,
+    loggoutHandler,
   };
 
   useEffect(() => {
