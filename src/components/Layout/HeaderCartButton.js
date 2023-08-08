@@ -4,6 +4,8 @@ import styles from './HeaderCartButton.module.css';
 import CartIcon from '../Cart/CartIcon';
 import CartContext from '../../store/cart-context';
 
+import Button from '../UI/Button';
+
 const HeaderCartButton = (props) => {
   const [btnHighlighted, setBtnHighlighted] = useState(false);
   const { items } = useContext(CartContext);
@@ -22,8 +24,8 @@ const HeaderCartButton = (props) => {
   }, [items]);
 
   return (
-    <button
-      className={`${styles.button} ${btnHighlighted ? styles.bump : ''}`}
+    <Button
+      className={`${btnHighlighted ? styles.bump : ''}`}
       onClick={props.onClick}
     >
       <span className={styles.icon}>
@@ -33,7 +35,7 @@ const HeaderCartButton = (props) => {
       <span>Your cart</span>
 
       <span className={styles.badge}>{totalCartItems}</span>
-    </button>
+    </Button>
   );
 };
 

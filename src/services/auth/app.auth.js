@@ -1,0 +1,125 @@
+import {
+  onAuthStateChanged,
+  signOut,
+  signInWithPopup,
+  isSignInWithEmailLink,
+  signInWithEmailLink,
+  signInWithEmailAndPassword,
+  updatePassword,
+  deleteUser,
+  sendSignInLinkToEmail,
+} from 'firebase/auth';
+
+/**
+ * App authentication Core, an abstraction of Firebase auth.
+ */
+class AppAuthCore {
+  user = null;
+
+  constructor(auth, googleProvider) {
+    this._auth = auth;
+    this._googleProvider = googleProvider;
+  }
+
+  #setUser(userParams) {
+    if (!userParams) return;
+    this.user = userParams;
+  }
+
+  onAuthStateChanged() {
+    return onAuthStateChanged(this._auth, (user) => {
+      this.#setUser(user);
+    });
+  }
+
+  logAuth() {
+    console.log(this._auth);
+  }
+
+  /**
+   * Use to signup with email account
+   */
+  async signupWithEmail(email) {
+    try {
+      const actionCodeSettings = {
+        // URL you want to redirect back to. The domain (www.example.com) for this
+        // URL must be in the authorized domains list in the Firebase Console.
+        url: 'http://localhost:3000',
+        handleCodeInApp: true,
+      };
+
+      await sendSignInLinkToEmail(this._auth, email, actionCodeSettings);
+
+      window.localStorage.setItem('emailForSignIn', email);
+
+      return this;
+    } catch (error) {
+      // show error on UI
+      throw new Error('Something went wrong, please try later!');
+    }
+  }
+
+  /**
+   * Use to complete registration of signup by providing password
+   */
+  async completeSignupRegistration(password) {
+    try {
+      if (!isSignInWithEmailLink(this._auth, window.location.href)) return;
+      const email = window.localStorage.getItem('emailForSignIn');
+
+      const { user } = await signInWithEmailLink(
+        this._auth,
+        email,
+        window.location.href
+      );
+
+      if (!user.emailVerified) {
+        // show user notification
+        deleteUser(user);
+        return;
+      }
+
+      await updatePassword(user, password);
+
+      window.localStorage.removeItem('emailForSignIn');
+
+      return this;
+    } catch (error) {
+      throw new Error('Something went wrong, please try later!');
+    }
+  }
+
+  /**
+   * Use to connect on the app with email & password
+   */
+  async loggedInWithEmailAndPassword(email, password) {
+    const { user } = await signInWithEmailAndPassword(
+      this._auth,
+      email,
+      password
+    );
+
+    this.#setUser(user);
+
+    return this;
+  }
+
+  /**
+   * Use to connect with Google account
+   */
+  async loggedInWithGoogle() {
+    const { user } = await signInWithPopup(this._auth, this._googleProvider);
+    this.#setUser(user);
+    return this;
+  }
+
+  /**
+   * Use to loggout on the app
+   */
+  async loggout() {
+    await signOut(this._auth);
+    return this;
+  }
+}
+
+export default AppAuthCore;
