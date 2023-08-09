@@ -1,5 +1,7 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import styles from './AvailableMeals.module.css';
+
+import { appConfig } from '../../config/app.config';
 
 import MealItem from './MealItem/MealItem';
 import Card from '../UI/Card';
@@ -32,7 +34,41 @@ const DUMMY_MEALS = [
 ];
 
 const AvailableMeals = () => {
-  const mealsList = DUMMY_MEALS.map((meal) => (
+  const [meals, setMeals] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [errorMsg, setErrorMsg] = useState(null);
+
+  useEffect(() => {
+    (async () => {
+      try {
+        const res = await fetch(`${appConfig.auth.databaseUrl}/meals.json`);
+
+        if (!res.ok) {
+          throw new Error('Something wrong, please try later!');
+        }
+
+        const data = await res.json();
+
+        const mealsData = [];
+
+        for (const item in data) {
+          mealsData.push({
+            id: item,
+            name: data[item].name,
+            description: data[item].description,
+            price: data[item].price,
+          });
+        }
+
+        setMeals(mealsData);
+      } catch (error) {
+        setErrorMsg(error?.message);
+      }
+      setIsLoading(false);
+    })();
+  }, []);
+
+  const mealsList = meals?.map((meal) => (
     <MealItem
       id={meal.id}
       key={meal.id}
@@ -41,6 +77,22 @@ const AvailableMeals = () => {
       price={meal.price}
     />
   ));
+
+  if (isLoading) {
+    return (
+      <section>
+        <div style={{ color: 'white', textAlign: 'center' }}>Loading ...</div>
+      </section>
+    );
+  }
+
+  if (errorMsg) {
+    return (
+      <section>
+        <div style={{ color: 'red', textAlign: 'center' }}>{errorMsg}</div>
+      </section>
+    );
+  }
 
   return (
     <section className={styles.meals}>
