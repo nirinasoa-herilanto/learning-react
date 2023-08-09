@@ -49,6 +49,12 @@
   color: white;
 }
 
+button:disabled,
+button:disabled:hover,
+button:disabled:active {
+  cursor: not-allowed;
+}
+
 .actions .submit:hover,
 .actions .submit:active {
   background-color: #7a2706;
