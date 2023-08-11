@@ -1,16 +1,31 @@
 import * as redux from 'redux';
+import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
   counter: 0,
   showCounter: true,
 };
 
-// Not do that, we shouldn't never mutate the state
-// if (action.type === 'increment') {
-//   state.counter++;
-
-//   return state;
-// }
+createSlice({
+  name: 'counter',
+  initialState,
+  reducers: {
+    increment(state) {
+      // here we can do that, we are allowed to mutate the state,
+      //  @reduxjs/toolkit do the job for us
+      state.counter++;
+    },
+    decrement(state) {
+      state.counter--;
+    },
+    increase(state, action) {
+      state.counter += action.value;
+    },
+    toggleCounter(state) {
+      state.showCounter = !state.showCounter;
+    },
+  },
+});
 
 const counterReducer = (state = initialState, action) => {
   if (action.type === 'increase') {
