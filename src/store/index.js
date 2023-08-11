@@ -5,6 +5,13 @@ const initialState = {
   showCounter: true,
 };
 
+// Not do that, we shouldn't never mutate the state
+// if (action.type === 'increment') {
+//   state.counter++;
+
+//   return state;
+// }
+
 const counterReducer = (state = initialState, action) => {
   if (action.type === 'increase') {
     return {
