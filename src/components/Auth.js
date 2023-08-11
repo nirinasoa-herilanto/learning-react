@@ -3,7 +3,7 @@ import React, { useRef } from 'react';
 import classes from './Auth.module.css';
 import { useDispatch } from 'react-redux';
 
-import { authActions } from '../store/index';
+import { authActions } from '../store/actions/auth.action';
 
 const Auth = () => {
   const emailRef = useRef();
