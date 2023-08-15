@@ -9,11 +9,14 @@ const initialState = {
 };
 
 const addToCart = (state, action) => {
-  const existingProduct = state.shoppingCart.some(
+  const existingProduct = state.shoppingCart.find(
     (item) => item.title?.toLowerCase() === action.payload.title?.toLowerCase()
   );
 
-  if (!existingProduct) {
+  if (existingProduct) {
+    existingProduct.quantity++;
+    existingProduct.total = existingProduct.price * existingProduct.quantity;
+  } else {
     state.shoppingCart.push(action.payload);
   }
 };

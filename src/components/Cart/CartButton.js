@@ -7,6 +7,11 @@ const CartButton = (props) => {
   const dispatch = useDispatch();
   const shoppingProducts = useSelector((state) => state.shop.shoppingCart);
 
+  const productsQuantity = shoppingProducts?.reduce(
+    (acc, item) => item.quantity + acc,
+    0
+  );
+
   const toggleShoppingCartHandler = () => {
     dispatch(shoppingActions.toggleShoppingCart());
   };
@@ -14,7 +19,7 @@ const CartButton = (props) => {
   return (
     <button className={classes.button} onClick={toggleShoppingCartHandler}>
       <span>My Cart</span>
-      <span className={classes.badge}>{shoppingProducts?.length}</span>
+      <span className={classes.badge}>{productsQuantity}</span>
     </button>
   );
 };
