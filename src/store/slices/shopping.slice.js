@@ -13,9 +13,7 @@ const addToCart = (state, action) => {
     (item) => item.title?.toLowerCase() === action.payload.title?.toLowerCase()
   );
 
-  if (existingProduct) {
-    state.shoppingCart = state.shoppingCart;
-  } else {
+  if (!existingProduct) {
     state.shoppingCart.push(action.payload);
   }
 };
