@@ -8,6 +8,10 @@ const initialState = {
   displayShoppingCart: false,
 };
 
+const loadShoppingCart = (state, action) => {
+  state.shoppingCart = action.payload;
+};
+
 const addToCart = (state, action) => {
   const existingProduct = state.shoppingCart.find(
     (item) => item.title?.toLowerCase() === action.payload.title?.toLowerCase()
@@ -70,6 +74,7 @@ const shoppingSlice = createSlice({
   name: 'shopping-cart',
   initialState,
   reducers: {
+    loadShoppingCart,
     addToCart,
     removeToCart,
     increaseProductQty,
