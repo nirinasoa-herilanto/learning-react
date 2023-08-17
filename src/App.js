@@ -1,21 +1,17 @@
-import './App.css';
 import React from 'react';
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 
-function App() {
-  React.useEffect(() => {
-    document.title = 'Welcome to the app';
-  }, []);
+import HomePage from './pages/HomePage';
 
-  return (
-    <div className="app">
-      <div className="app__content">
-        <h1 className="title">Welcome to my project</h1>
-        <p>
-          An application about learning and deep dive into React.JS framework
-        </p>
-      </div>
-    </div>
-  );
-}
+const router = createBrowserRouter([
+  {
+    path: '/',
+    element: <HomePage />,
+  },
+]);
+
+const App = () => {
+  return <RouterProvider router={router} />;
+};
 
 export default App;
