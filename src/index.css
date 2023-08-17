@@ -49,6 +49,12 @@ ul {
   padding: 0;
 }
 
+a {
+  color: #ffffff;
+  text-decoration: none;
+  margin: 10px;
+}
+
 main {
   margin: 2rem auto;
   text-align: center;
