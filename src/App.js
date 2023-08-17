@@ -3,24 +3,22 @@ import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 
 import HomePage from './pages/HomePage';
 import ProductsPage from './pages/ProductsPage';
-
-// const routesDefinition = createRoutesFromElements(
-//   <Route>
-//     <Route path="/" element={<HomePage />} />
-//     <Route path="/products" element={<ProductsPage />} />
-//   </Route>
-// );
-
-// const router = createBrowserRouter(routesDefinition);
+import RootLayout from './components/Layout/RootLayout';
 
 const router = createBrowserRouter([
   {
     path: '/',
-    element: <HomePage />,
-  },
-  {
-    path: '/products',
-    element: <ProductsPage />,
+    element: <RootLayout />, // Wrapper
+    children: [
+      {
+        path: '/',
+        element: <HomePage />,
+      },
+      {
+        path: '/products',
+        element: <ProductsPage />,
+      },
+    ],
   },
 ]);
 
