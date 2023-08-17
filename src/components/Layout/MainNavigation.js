@@ -1,7 +1,7 @@
 import React from 'react';
 import styles from './MainNavigation.module.css';
 
-import { Link } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 
 const MainNavigation = () => {
   return (
@@ -9,10 +9,25 @@ const MainNavigation = () => {
       <nav>
         <ul className={styles.list}>
           <li>
-            <Link to="/">Home</Link>
+            <NavLink
+              to="/"
+              className={({ isActive }) =>
+                isActive ? styles.active : undefined
+              }
+              end
+            >
+              Home
+            </NavLink>
           </li>
           <li>
-            <Link to="/products">products</Link>
+            <NavLink
+              to="/products"
+              className={({ isActive }) =>
+                isActive ? styles.active : undefined
+              }
+            >
+              products
+            </NavLink>
           </li>
         </ul>
       </nav>
